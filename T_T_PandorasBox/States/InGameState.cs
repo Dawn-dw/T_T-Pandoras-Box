@@ -94,7 +94,7 @@ internal sealed class InGameAppState : IAppState
 
         windowOptions.Title = _randomGenerator.GetRandomString(8, 12);
             
-        var size = WindowsApi.GetVirtualDisplaySize();
+        var size = WindowsApi.GetScreenSize();
         windowOptions.Size = new Vector2D<int>(size.Width-1, size.Height-1);
 
         windowOptions.TopMost = true;

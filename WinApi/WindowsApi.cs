@@ -18,6 +18,8 @@ namespace WinApi
         
         public enum SystemMetric
         {
+            SmCxScreen = 0,
+            SmCyScreen = 1,
             VirtualScreenWidth = 78,
             VirtualScreenHeight = 79,
         }
@@ -25,6 +27,14 @@ namespace WinApi
         [DllImport("user32.dll")]
         public static extern int GetSystemMetrics(SystemMetric metric);
 
+        public static Size GetScreenSize()
+        {
+            var width = GetSystemMetrics(SystemMetric.SmCxScreen);
+            var height = GetSystemMetrics(SystemMetric.SmCyScreen);
+
+            return new Size(width, height);
+        }
+        
         public static Size GetVirtualDisplaySize()
         {
             var width = GetSystemMetrics(SystemMetric.VirtualScreenWidth);
