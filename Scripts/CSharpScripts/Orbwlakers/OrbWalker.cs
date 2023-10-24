@@ -68,7 +68,7 @@ public class OrbWalker : IOrbWalkScript
         _turretManager = turretManager;
 
         var menu = mainMenu.CreateMenu(Name, ScriptType.OrbWalker);
-        _humanizerSlider = menu.AddValueSlider("Humanizer", "Delay between move actions", 25, 25, 300);
+        _humanizerSlider = menu.AddValueSlider("Humanizer", "Delay between move actions", 75, 25, 300);
         _pingSlider = menu.AddValueSlider("Ping", "Average ping", 35, 5, 300);
         _extraWindupSlider = menu.AddValueSlider("Extra windup", "Extra time between attack and move", 25, 0, 100);
         _stoppingDistanceSlider = menu.AddValueSlider("Stopping distance", "Extra time between attack and move", 70, 0, 250);

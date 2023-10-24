@@ -3,7 +3,30 @@
 
 **Disclaimer: This code is for educational purposes only. It is not intended for use in any games or competitions where it may violate the terms and conditions or be considered unfair to other players. Please use this code responsibly and at your own risk.**
 
+---
+
+## Creedits
+- UC forum users active in League of Legends Reversal and thread starters with solutions
+- Koelion
+
+---
+## Info
+- Requires .NET 6
+- Run as admin
+- Before first game launch and go to Data downloader to download some data from https://raw.communitydragon.org/latest/game/data/characters/
+- Unmap in league settings keys like X, C, V and other which can create problems
+- Disable auto attacks, 
+
+---
+
+## Updating offsets
+Offsets are located in appsettings.json in T_T_PandorasBox.
+
+---
+
 # SDK/API
+
+Its not final and changes will be made.
 
 ---
 
@@ -1432,4 +1455,11 @@ end
     if gameInput:IssueOrder(position, IssueOrderType.Move) == true then
         humanizeTimer = humanizer.Value / 1000
     end
+```
+
+## C# Scripts
+Your c# scripts should extend : IScript
+register you c# script in `ScriptsServiceInstaller` in `Scripts` project
+```
+  collection.AddSingleton<IScript, Your script name>();
 ```

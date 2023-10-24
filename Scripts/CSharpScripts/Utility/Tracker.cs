@@ -62,7 +62,7 @@ public class Tracker : IScript
         
         var subMenuPaths = menu.AddSubMenu("Paths", "");
         _showAllyPath = subMenuPaths.AddToggle("Ally path indicator", "Might make lags. Line renderer needs fixes. Display allay path nodes", false);
-        _showEnemyPath = subMenuPaths.AddToggle("Enemy path indicator", "Might make lags. Line renderer needs fixes. Display enemy path nodes", true);
+        _showEnemyPath = subMenuPaths.AddToggle("Enemy path indicator", "Might make lags. Line renderer needs fixes. Display enemy path nodes", false);
 
         _showEnemyWards = menu.AddToggle("Enemy wards indicator", "Display enemy wards", true);
         _showEnemyTraps = menu.AddToggle("Enemy traps indicator", "Display enemy traps", true);
