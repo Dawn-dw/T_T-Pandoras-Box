@@ -31,6 +31,21 @@ Its not final and changes will be made.
 
 ---
 
+## IRenderer
+
+### Methods
+
+- `Rect(Vector2 position, Vector2 size, Color color)`: Renders a 2D rectangle with the given position, size, and color.
+- `Circle(Vector2 position, float size, Color color, float width, float time, float speed, int type)`: Renders a 2D circle with the specified parameters.
+- `Rect3D(Vector3 start, Vector3 end, float width, Color color)`: Renders a 3D rectangle defined by two corner points, width, and color.
+- `Circle3D(Vector3 position, float size, Color color, float width, float time, float speed, int type)`: Renders a 3D circle at the specified position with the given parameters.
+- `Text(string text, Vector2 position, float size, Color color)`: Renders text at the specified position with the specified size and color.
+- `IsOnScreen(Vector2 position)`: Checks if a 2D position is on the screen.
+- `RenderLines(Vector3[] positions, float size, Color color)`: Renders a series of 3D lines using an array of positions, size, and color.
+- `RenderLines(IEnumerable<Vector3> positions, float size, Color color)`: Renders a series of 3D lines using a collection of positions, size, and color.
+
+---
+
 ## VirtualKey
 
 An enumeration representing various virtual key codes for key inputs.
