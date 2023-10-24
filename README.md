@@ -1,4 +1,5 @@
 # T_T Pandora's Box
+## Alpha release
 <br />
 
 **Disclaimer: This code is for educational purposes only. It is not intended for use in any games or competitions where it may violate the terms and conditions or be considered unfair to other players. Please use this code responsibly and at your own risk.**
@@ -15,8 +16,8 @@
 - Run as admin
 - Before first game launch and go to Data downloader to download some data from https://raw.communitydragon.org/latest/game/data/characters/
 - Unmap in league settings keys like X, C, V and other which can create problems
-- Disable auto attacks, 
-
+- Disable auto attacks, enable attack move on cursor, Bind Target Champions Only in Hotkeys/Abilities and Summoner Spells to `
+- Run game in Window Mode: Borderless
 ---
 
 ## Updating offsets
