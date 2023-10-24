@@ -28,17 +28,9 @@ internal class AttackableUnitReader : GameObjectReader, IAttackableUnitReader
             return false;
         }
 
-        // var isDeadObfuscation = ReadOffset<ObfuscatedBool>(_attackableUnitOffsets.IsDead);
-        // try
-        // {
-        //     attackableUnit.IsDead = isDeadObfuscation.Deobfuscate();
-        // }
-        // catch (Exception ex)
-        // {
-        //     attackableUnit.IsDead = false;
-        // }
+        var isDeadObfuscation = ReadOffset<ObfuscatedBool>(_attackableUnitOffsets.IsDead);
+        attackableUnit.IsDead = isDeadObfuscation.Deobfuscate();
 
-        attackableUnit.IsDead = false;
         attackableUnit.Mana = ReadOffset<float>(_attackableUnitOffsets.Mana);
         attackableUnit.MaxMana = ReadOffset<float>(_attackableUnitOffsets.MaxMana);
         attackableUnit.Health = ReadOffset<float>(_attackableUnitOffsets.Health);
@@ -75,9 +67,9 @@ internal class AttackableUnitReader : GameObjectReader, IAttackableUnitReader
             return false;
         }
 
-        // var isDeadObfuscation = ReadOffset<ObfuscatedBool>(_attackableUnitOffsets.IsDead);
-        // attackableUnit.IsDead = isDeadObfuscation.Deobfuscate();
-        attackableUnit.IsDead = false;
+        var isDeadObfuscation = ReadOffset<ObfuscatedBool>(_attackableUnitOffsets.IsDead, batchReadContext);
+        attackableUnit.IsDead = isDeadObfuscation.Deobfuscate();
+        
         attackableUnit.Mana = ReadOffset<float>(_attackableUnitOffsets.Mana, batchReadContext);
         attackableUnit.MaxMana = ReadOffset<float>(_attackableUnitOffsets.MaxMana, batchReadContext);
         attackableUnit.Health = ReadOffset<float>(_attackableUnitOffsets.Health, batchReadContext);

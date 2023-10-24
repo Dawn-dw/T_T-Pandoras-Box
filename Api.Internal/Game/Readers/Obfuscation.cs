@@ -48,17 +48,17 @@ internal unsafe struct ObfuscatedLong
 [StructLayout(LayoutKind.Sequential)]
 internal unsafe struct ObfuscatedBool
 {
-    private const int Size = sizeof(bool);
+    private const int Size = sizeof(byte);
     private bool isInit;
     private byte xorCount64;
     private byte xorCount8;
-    private bool xorKey;
+    private byte xorKey;
     private byte valueIndex;
-    private fixed bool valueTable[4];
+    private fixed byte valueTable[4];
 
     public bool Deobfuscate()
     {
-        var value = valueTable[valueIndex];
+        var value = (int)valueTable[valueIndex];
 
         var xor64 = xorCount64;
         var xor8 = xorCount8;
@@ -73,7 +73,7 @@ internal unsafe struct ObfuscatedBool
             return false;
         }
         
-        fixed (bool* pXorKey = &xorKey)
+        fixed (byte* pXorKey = &xorKey)
         {
             var xorValuePtr64 = (ulong*)pXorKey;
             for (var i = 0; i < xor64; i++)
@@ -84,6 +84,12 @@ internal unsafe struct ObfuscatedBool
                 ((byte*)&value)[i] ^= (byte)~xorValuePtr8[i];
         }
 
-        return value;
+        /*
+         long v5 = heroOffset + 0x274;
+        int v8 = mem.getByte(v5 + mem.getByte(v5 + 4) + 5);
+        long decryptionKey = mem.getLong(v5 + 3);
+        isDead = (byte) (v8 ^ ~decryptionKey);
+         */
+        return value > 0;
     }
 }

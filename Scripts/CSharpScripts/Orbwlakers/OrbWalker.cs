@@ -6,6 +6,7 @@ using Api.Game.Managers;
 using Api.Game.Objects;
 using Api.Menus;
 using Api.Scripts;
+using Api.Utils;
 using Scripts.Utils;
 using Timer = Scripts.Utils.Timer;
 
@@ -26,6 +27,8 @@ public class OrbWalker : IOrbWalkScript
     private readonly IGameInput _gameInput;
     private readonly ITargetSelector _targetSelector;
     private readonly ITurretManager _turretManager;
+    private readonly IGameCamera _gameCamera;
+    private readonly IRandomGenerator _randomGenerator;
 
     private readonly Timer _humanizerTimer;
     private readonly Timer _attackTimer;
@@ -34,6 +37,7 @@ public class OrbWalker : IOrbWalkScript
     private readonly IToggle _supportMode;
     private readonly IToggle _drawAttackRange;
     private readonly IToggle _drawKillableMinions;
+    private readonly IToggle _humanizerSliderAddRandomDelay;
     private readonly IValueSlider _humanizerSlider;
     private readonly IValueSlider _pingSlider;
     private readonly IValueSlider _extraWindupSlider;
@@ -51,7 +55,9 @@ public class OrbWalker : IOrbWalkScript
         Timer humanizerTimer,
         Timer moveTimer,
         Timer attackTimer,
-        ITargetSelector targetSelector, ITurretManager turretManager)
+        ITargetSelector targetSelector,
+        ITurretManager turretManager,
+        IGameCamera gameCamera, IRandomGenerator randomGenerator)
     {
         _scriptingState = scriptingState;
         _gameManager = gameManager;
@@ -66,8 +72,11 @@ public class OrbWalker : IOrbWalkScript
         _attackTimer = attackTimer;
         _targetSelector = targetSelector;
         _turretManager = turretManager;
+        _gameCamera = gameCamera;
+        _randomGenerator = randomGenerator;
 
         var menu = mainMenu.CreateMenu(Name, ScriptType.OrbWalker);
+        _humanizerSliderAddRandomDelay = menu.AddToggle("Humanizer random delay", "Adds random value to humanizer 5-50", true);
         _humanizerSlider = menu.AddValueSlider("Humanizer", "Delay between move actions", 75, 25, 300);
         _pingSlider = menu.AddValueSlider("Ping", "Average ping", 35, 5, 300);
         _extraWindupSlider = menu.AddValueSlider("Extra windup", "Extra time between attack and move", 25, 0, 100);
@@ -112,7 +121,12 @@ public class OrbWalker : IOrbWalkScript
         
         if (_gameInput.IssueOrder(position, IssueOrderType.Move))
         {
-            _moveTimer.SetDelay(_humanizerSlider.Value / 1000.0f);
+            var value = _humanizerSlider.Value;
+            if (_humanizerSliderAddRandomDelay.Toggled)
+            {
+                value+=_randomGenerator.NextFloat(5, 50.0f);
+            }
+            _moveTimer.SetDelay(value / 1000.0f);
         }
     }
 
@@ -239,6 +253,12 @@ public class OrbWalker : IOrbWalkScript
         {
             _renderer.Circle3D(_localPlayer.Position, _localPlayer.AttackRange, Color.White, 2, _gameState.Time, 1, 2);
         }
+
+        if (_stoppingDistanceSlider.Value > 50)
+        {
+            _renderer.Circle3D(_localPlayer.Position, _stoppingDistanceSlider.Value, Color.Green, 2, _gameState.Time, 1, 0);
+        }
+        
         DrawKillableMinions();
     }
     
