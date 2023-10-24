@@ -1367,9 +1367,16 @@ Enumerates the possible types of TargetSelectorMode.
 
 ---
 
-## Lua Bindings
+## Lua
 
-In your script, you've created Lua bindings to make various game-related objects and functions accessible within the Lua environment. Here's a summary of the bindings:
+Lua scripts should be located in `/Resources/LuaScripts/{Type}` <br/>
+Types
+- Prediction -> `/Resources/LuaScripts/Prediction`
+- Evade -> `/Resources/LuaScripts/Evade`
+- OrbWalker -> `/Resources/LuaScripts/OrbWalker`
+- TargetSelector -> `/Resources/LuaScripts/TargetSelector`
+- Utility -> `/Resources/LuaScripts/Utility`
+- Champion -> `/Resources/LuaScripts/Champion`
 
 ### Objects and Managers
 
@@ -1414,6 +1421,7 @@ In your script, you've created Lua bindings to make various game-related objects
 ### MainMenu Functions
 
 - `CreateMenu`: Creates a new [IMenu](#imenu) in the main menu.
+- `RemoveMenu(menu)`: Removes menu from main menu.
 
 ### Using Objects
 - `Calling properties`: example `local pos = Hero.Position`

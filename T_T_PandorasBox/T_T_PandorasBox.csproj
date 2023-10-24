@@ -107,6 +107,9 @@
     <None Update="Resources\LuaScripts\Examples\Tracker.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\LuaScripts\Utility\HelloLua.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -122,10 +125,6 @@
 
   <ItemGroup>
     <EmbeddedResource Remove="Data\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Resources\LuaScripts\Utility\" />
   </ItemGroup>
 
 </Project>

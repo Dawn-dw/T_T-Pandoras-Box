@@ -112,6 +112,7 @@ internal class LuaBinder
         lua.RegisterEnum<ScriptType>();
         lua.RegisterEnum<HotkeyType>();
         lua.RegisterFunction("CreateMenu", _mainMenu, typeof(IMainMenu).GetMethod("CreateMenu"));
+        lua.RegisterFunction("RemoveMenu", _mainMenu, typeof(IMainMenu).GetMethod("RemoveMenu"));
         
     }
 }
