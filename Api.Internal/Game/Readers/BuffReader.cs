@@ -38,7 +38,7 @@ internal class BuffReader : BaseReader, IBuffReader
         }
         
         var size = (int)(end.ToInt64() - start.ToInt64()) / 0x8;
-        if (size > 50)
+        if (size > 100)
         {
 	        return;
         }
@@ -115,10 +115,14 @@ internal class BuffReader : BaseReader, IBuffReader
 		    return null;
 	    }
 
-	    var name = ReadCharArray(buffInfoPtr + _buffOffsets.BuffInfoName.Offset, Encoding.ASCII);
-	    if (string.IsNullOrWhiteSpace(name) || name.Count(char.IsLetter) < 3)
+	    string name = string.Empty;
+	    if (Memory.ReadPointer(buffInfoPtr + _buffOffsets.BuffInfoName.Offset, out var buffNamePtr))
 	    {
-		    return null;
+		    name = ReadCharArray(buffNamePtr, Encoding.ASCII);
+		    if (string.IsNullOrWhiteSpace(name) || name.Count(char.IsLetter) < 3)
+		    {
+			    return null;
+		    }   
 	    }
 
 	    var buff = _buffPool.Get();
