@@ -13,4 +13,7 @@ public class SpellData
     public MissileData? MissileData { get; set; }
     public string? TargetingTypeData { get; set; }
     public int NameHash { get; set; }
+    
+    //TODO Check Cast Types
+    public int CastType { get; set; }
 }

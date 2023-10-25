@@ -63,7 +63,7 @@ public class ProjectileViewer : IScript
             var hero = _heroManager.GetHero(missile.SourceIndex);
             if(hero is null || hero.Team == _localPlayer.Team) continue;
             
-            _renderer.Rect3D(missile.StartPosition, missile.EndPosition, 80, Color.Red);
+            _renderer.Rect3D(missile.StartPosition, missile.EndPosition, missile.Width, Color.Red);
         }
     }
 }

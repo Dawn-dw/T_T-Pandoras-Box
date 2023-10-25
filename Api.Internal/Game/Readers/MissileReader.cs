@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
+using Api.Game.Data;
 using Api.Game.Objects;
 using Api.Game.Offsets;
 using Api.Game.Readers;
@@ -13,12 +14,18 @@ internal class MissileReader : BaseReader, IMissileReader
     private readonly IMissileOffsets _missileOffsets;
     private readonly BatchReadContext _missileSpellInfoBatchReadContext;
     private readonly ILocalPlayer _localPlayer;
+    private readonly SpellDataDictionary _spellDataDictionary;
 
-    public MissileReader(IMemory memory, IMissileOffsets missileOffsets, ILocalPlayer localPlayer) : base(memory)
+    public MissileReader(
+        IMemory memory,
+        IMissileOffsets missileOffsets,
+        ILocalPlayer localPlayer,
+        SpellDataDictionary spellDataDictionary) : base(memory)
     {
         _missileOffsets = missileOffsets;
         _localPlayer = localPlayer;
-        
+        _spellDataDictionary = spellDataDictionary;
+
         _missileSpellInfoBatchReadContext = new BatchReadContext(GetSize(_missileOffsets.GetSpellInfoOffsets()));
     }
 
@@ -36,8 +43,11 @@ internal class MissileReader : BaseReader, IMissileReader
         
         missile.NetworkId = ReadOffset<int>(_missileOffsets.NetworkId);
         missile.Name = ReadString(_missileOffsets.Name, Encoding.ASCII);
-        missile.Speed = ReadOffset<float>(_missileOffsets.Speed);
+        missile.NameHash = missile.Name.GetHashCode();
         missile.Position = ReadOffset<Vector3>(_missileOffsets.Position);
+        
+        //propably should be read from spell data we dont want to do a lot of memory reads to with plenty of missiles
+        //missile.Speed = ReadOffset<float>(_missileOffsets.Speed);
         
         var spellInfoPtr = ReadOffset<IntPtr>(_missileOffsets.SpellInfo);
         if (!ReadBuffer(spellInfoPtr, _missileSpellInfoBatchReadContext))
@@ -51,6 +61,19 @@ internal class MissileReader : BaseReader, IMissileReader
         
         missile.SpellName = ReadString(_missileOffsets.SpellInfoSpellName, Encoding.ASCII, _missileSpellInfoBatchReadContext);
         missile.MissileName = ReadString(_missileOffsets.SpellInfoMissileName, Encoding.ASCII, _missileSpellInfoBatchReadContext);
+        
+        missile.SpellData = _spellDataDictionary[missile.SpellName.GetHashCode()];
+        if (missile.SpellData is not null && missile.SpellData.MissileData is not null)
+        {
+            missile.MissileData = missile.SpellData.MissileData;
+            missile.Speed = missile.MissileData.Speed;
+            missile.Width = missile.MissileData.Width;
+        }
+        else
+        {
+            missile.Speed = 650;
+            missile.Width = 80;
+        }
         
         missile.SourceIndex = ReadOffset<int>(_missileOffsets.SourceIndex);
         

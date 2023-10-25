@@ -54,6 +54,8 @@ namespace Api.Internal
             collection.TryAddSingleton<IMainMenu, MainMenu>();
 
             collection.TryAddSingleton<UnitDataDictionary>();
+            collection.TryAddSingleton<SpellDataDictionary>();
+            collection.TryAddSingleton<MissileDataDictionary>();
 
             RegisterCalculators(collection);
             RegisterObjects(collection);

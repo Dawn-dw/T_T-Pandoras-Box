@@ -16,11 +16,19 @@ public class MainWindowDataView : IMainWindowView
     private readonly string _patternUrlUnitData = "https://raw.communitydragon.org/latest/game/data/characters/{0}/{0}.bin.json";
     private bool _downloading;
     private readonly UnitDataDictionary _unitDataDictionary;
+    private readonly SpellDataDictionary _spellDataDictionary;
+    private readonly MissileDataDictionary _missileDataDictionary;
 
-    public MainWindowDataView(JsonSerializerSettings jsonSerializerSettings, UnitDataDictionary unitDataDictionary)
+    public MainWindowDataView(
+        JsonSerializerSettings jsonSerializerSettings,
+        UnitDataDictionary unitDataDictionary,
+        SpellDataDictionary spellDataDictionary,
+        MissileDataDictionary missileDataDictionary)
     {
         _jsonSerializerSettings = jsonSerializerSettings;
         _unitDataDictionary = unitDataDictionary;
+        _missileDataDictionary = missileDataDictionary;
+        _spellDataDictionary = spellDataDictionary;
     }
 
     public string Name => "Data downloader";
@@ -88,6 +96,8 @@ public class MainWindowDataView : IMainWindowView
         }
         
         _unitDataDictionary.Init(unitsDictionary);
+        _spellDataDictionary.Init(_unitDataDictionary);
+        _missileDataDictionary.Init(_unitDataDictionary);
         var path = Path.Combine("Resources", "Data", "Units.json");
         await File.WriteAllTextAsync(path, JsonConvert.SerializeObject(unitsDictionary, Formatting.Indented, _jsonSerializerSettings));
     }
@@ -198,9 +208,10 @@ public class MainWindowDataView : IMainWindowView
                 Speed = Read(spellDataDictionary, 0.0f, "missileSpeed"),
                 Width = Read(spellDataDictionary, 0.0f, "mLineWidth"),
                 TargetingTypeData = Read(spellDataDictionary, string.Empty, "mTargetingTypeData", "__type") ?? string.Empty,
-                MissileData = MapMissile(spellDataDictionary)
+                CastType = Read(spellDataDictionary, 0, "mCastType")
             };
-            
+
+            spellData.MissileData = MapMissile(spellDataDictionary, spellData.Name, spellData.Width, spellData.Speed);
             spellData.NameHash = spellData.Name.GetHashCode();
             
             result.Add(spellData);
@@ -209,7 +220,7 @@ public class MainWindowDataView : IMainWindowView
         return result;
     }
     
-    private MissileData? MapMissile(IDictionary<string, dynamic>? root)
+    private MissileData? MapMissile(IDictionary<string, dynamic>? root, string name, float defaultWidth, float defaultSpeed)
     {
         if (root is null) return null;
         if (root.TryGetValue("mMissileSpec", out var missileSpecD) && missileSpecD is IDictionary<string, dynamic> missileSpec)
@@ -219,9 +230,12 @@ public class MainWindowDataView : IMainWindowView
             {
                 return new MissileData
                 {
-                    Speed = Read(movementComponent, 0.0f, "mSpeed"),
+                    Name = name,
+                    Speed = Read(movementComponent, defaultSpeed, "mSpeed"),
                     Height = Read(movementComponent, 0.0f, "mOffsetInitialTargetHeight"),
                     TravelTime = Read(movementComponent, 0.0f, "mTravelTime"),
+                    Width = Read(missileSpec, defaultWidth, "mMissileWidth"),
+                    MissileType = Read(missileSpec, string.Empty, "__type") ?? string.Empty
                 };
             }
         }

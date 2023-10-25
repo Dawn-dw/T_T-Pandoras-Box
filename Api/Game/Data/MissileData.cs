@@ -7,4 +7,6 @@ public class MissileData
     public float Height { get; set; }
     public float TravelTime { get; set; }
     public int NameHash { get; set; }
+    public float Width { get; set; }
+    public string MissileType { get; set; } = string.Empty;
 }

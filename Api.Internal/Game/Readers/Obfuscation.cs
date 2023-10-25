@@ -15,6 +15,11 @@ internal unsafe struct ObfuscatedLong
 
     public long Deobfuscate()
     {
+        if (valueIndex is >= 4 or <= 0)
+        {
+            return 0;
+        }
+        
         var value = valueTable[valueIndex];
 
         var xor64 = xorCount64;
@@ -58,6 +63,11 @@ internal unsafe struct ObfuscatedBool
 
     public bool Deobfuscate()
     {
+        if (valueIndex is >= 4 or <= 0)
+        {
+            return false;
+        }
+        
         var value = (int)valueTable[valueIndex];
 
         var xor64 = xorCount64;

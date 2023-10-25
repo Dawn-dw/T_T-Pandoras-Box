@@ -364,6 +364,7 @@ Extends [IHero](#ihero)
 - `MissileData` (MissileData?): Additional information about the spell if it involves a missile or projectile. Null if not applicable.
 - `TargetingTypeData` (string?): Data about the types of targets the spell can affect. Null if not applicable.
 - `NameHash` (int): A hash representation of the spell's name for efficient comparisons or lookups.
+- `CastType` (int): Cast Type needs some reversing to create enum
 
 ### Dependencies
 
@@ -513,6 +514,9 @@ Extends: [IBaseObject](#ibaseobject)
 - `EndPosition` (Vector3): The final 3D position the missile is aimed at.
 - `SpellName` (string): The name of the spell or ability that produced or is associated with the missile.
 - `MissileName` (string): A specific name tied to the missile type.
+- `Width`(float): The missile collision radious.
+- `MissileData` (MissileData?): Missile spell data
+- `SpellData` (SpellData?): Missile data
 
 ---
 
