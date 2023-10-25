@@ -63,7 +63,7 @@ internal class MissileReader : BaseReader, IMissileReader
         missile.MissileName = ReadString(_missileOffsets.SpellInfoMissileName, Encoding.ASCII, _missileSpellInfoBatchReadContext);
         
         missile.SpellData = _spellDataDictionary[missile.SpellName.GetHashCode()];
-        if (missile.SpellData is not null && missile.SpellData.MissileData is not null)
+        if (missile.SpellData?.MissileData != null)
         {
             missile.MissileData = missile.SpellData.MissileData;
             missile.Speed = missile.MissileData.Speed;
